@@ -269,15 +269,15 @@ const NITGoaCampusMap = () => {
 
   // Create markers
   useEffect(() => {
-    if (!map || !window.google || activeTab !== 'map') return;
+  if (!map || !window.google || activeTab !== 'map') return;
 
-    // Clear existing markers properly
-    markers.forEach(marker => marker.setMap(null));
+  const markerMap = new Map();
 
-    const newMarkers = filteredLocations.map(location => {
+  filteredLocations.forEach(location => {
+    if (!markerMap.has(location.id)) {
       const marker = new window.google.maps.Marker({
         position: { lat: location.lat, lng: location.lng },
-        map: map,
+        map,
         title: location.name,
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,
@@ -297,16 +297,25 @@ const NITGoaCampusMap = () => {
         map.panTo({ lat: location.lat, lng: location.lng });
       });
 
-      return marker;
-    });
+      markerMap.set(location.id, marker);
+    }
+  });
 
-    setMarkers(newMarkers);
+  // Remove markers for locations no longer in filtered list
+  markers.forEach(marker => {
+    if (!filteredLocations.find(loc => loc.id === marker.id)) {
+      marker.setMap(null);
+      markerMap.delete(marker.id);
+    }
+  });
 
-    // Cleanup function
-    return () => {
-      newMarkers.forEach(marker => marker.setMap(null));
-    };
-  }, [map, filteredLocations, activeTab]);
+  setMarkers(Array.from(markerMap.values()));
+
+  // Cleanup only when the component unmounts (not every rerender)
+  return () => {
+    markerMap.forEach(marker => marker.setMap(null));
+  };
+}, [map, filteredLocations, activeTab]);
 
   // Track user location
   useEffect(() => {
