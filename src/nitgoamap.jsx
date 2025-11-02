@@ -239,7 +239,7 @@ const NITGoaCampusMap = () => {
       const mapInstance = new window.google.maps.Map(mapRef.current, {
         center: CAMPUS_CENTER,
         zoom: 17,
-        mapTypeId: mapType,
+        mapTypeId: 'satellite',
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false,
