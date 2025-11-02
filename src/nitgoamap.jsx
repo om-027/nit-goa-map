@@ -267,53 +267,51 @@ const NITGoaCampusMap = () => {
     }
   }, [mapType, activeTab]);
 
-  // Create markers
   useEffect(() => {
   if (!map || !window.google || activeTab !== 'map') return;
 
-  const markerMap = new Map();
+  // Only update if locations have truly changed
+  if (markers.length === filteredLocations.length && 
+      markers.every((m, i) => 
+        m.getPosition().lat() === filteredLocations[i].lat && 
+        m.getPosition().lng() === filteredLocations[i].lng)) {
+    return; // no change, skip redraw
+  }
 
-  filteredLocations.forEach(location => {
-    if (!markerMap.has(location.id)) {
-      const marker = new window.google.maps.Marker({
-        position: { lat: location.lat, lng: location.lng },
-        map,
-        title: location.name,
-        icon: {
-          path: window.google.maps.SymbolPath.CIRCLE,
-          scale: 12,
-          fillColor: getCategoryColor(location.category),
-          fillOpacity: 0.9,
-          strokeColor: '#ffffff',
-          strokeWeight: 3
-        },
-        animation: window.google.maps.Animation.DROP,
-        optimized: true
-      });
+  // Remove old markers
+  markers.forEach(marker => marker.setMap(null));
 
-      marker.addListener('click', () => {
-        setSelectedLocation(location);
-        setDetailPanelHeight(2);
-        map.panTo({ lat: location.lat, lng: location.lng });
-      });
+  // Add new ones
+  const newMarkers = filteredLocations.map(location => {
+    const marker = new window.google.maps.Marker({
+      position: { lat: location.lat, lng: location.lng },
+      map,
+      title: location.name,
+      icon: {
+        path: window.google.maps.SymbolPath.CIRCLE,
+        scale: 12,
+        fillColor: getCategoryColor(location.category),
+        fillOpacity: 0.9,
+        strokeColor: '#ffffff',
+        strokeWeight: 3
+      },
+      animation: window.google.maps.Animation.DROP,
+      optimized: true
+    });
 
-      markerMap.set(location.id, marker);
-    }
+    marker.addListener('click', () => {
+      setSelectedLocation(location);
+      setDetailPanelHeight(2);
+      map.panTo({ lat: location.lat, lng: location.lng });
+    });
+
+    return marker;
   });
 
-  // Remove markers for locations no longer in filtered list
-  markers.forEach(marker => {
-    if (!filteredLocations.find(loc => loc.id === marker.id)) {
-      marker.setMap(null);
-      markerMap.delete(marker.id);
-    }
-  });
+  setMarkers(newMarkers);
 
-  setMarkers(Array.from(markerMap.values()));
-
-  // Cleanup only when the component unmounts (not every rerender)
   return () => {
-    markerMap.forEach(marker => marker.setMap(null));
+    newMarkers.forEach(marker => marker.setMap(null));
   };
 }, [map, filteredLocations, activeTab]);
 
