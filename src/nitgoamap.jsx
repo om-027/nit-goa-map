@@ -267,22 +267,17 @@ const NITGoaCampusMap = () => {
     }
   }, [mapType, activeTab]);
 
-  useEffect(() => {
+  const markersRef = useRef([]);
+
+useEffect(() => {
   if (!map || !window.google || activeTab !== 'map') return;
 
-  // Only update if locations have truly changed
-  if (markers.length === filteredLocations.length && 
-      markers.every((m, i) => 
-        m.getPosition().lat() === filteredLocations[i].lat && 
-        m.getPosition().lng() === filteredLocations[i].lng)) {
-    return; // no change, skip redraw
-  }
+  // Clear previous markers
+  markersRef.current.forEach(marker => marker.setMap(null));
+  markersRef.current = [];
 
-  // Remove old markers
-  markers.forEach(marker => marker.setMap(null));
-
-  // Add new ones
-  const newMarkers = filteredLocations.map(location => {
+  // Create new markers
+  filteredLocations.forEach(location => {
     const marker = new window.google.maps.Marker({
       position: { lat: location.lat, lng: location.lng },
       map,
@@ -305,14 +300,8 @@ const NITGoaCampusMap = () => {
       map.panTo({ lat: location.lat, lng: location.lng });
     });
 
-    return marker;
+    markersRef.current.push(marker);
   });
-
-  setMarkers(newMarkers);
-
-  return () => {
-    newMarkers.forEach(marker => marker.setMap(null));
-  };
 }, [map, filteredLocations, activeTab]);
 
   // Track user location
