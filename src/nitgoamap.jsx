@@ -274,24 +274,21 @@ useEffect(() => {
 
   const existingMarkers = markersRef.current;
 
-  // Create a map (object) of existing markers by lat,lng
-  const markerMap = new Map(
-    existingMarkers.map(marker => {
-      const pos = marker.getPosition();
-      return [`${pos.lat()},${pos.lng()}`, marker];
-    })
-  );
+  // Compare current locations with existing markers
+  const currentIds = new Set(existingMarkers.map(m => m.id));
+  const newIds = new Set(filteredLocations.map(l => l.id));
 
-  // Prepare updated marker list
-  const updatedMarkers = [];
+  // Remove only markers that are no longer needed
+  existingMarkers.forEach(marker => {
+    if (!newIds.has(marker.id)) {
+      marker.setMap(null);
+    }
+  });
 
+  // Add new markers that aren’t already on the map
   filteredLocations.forEach(location => {
-    const key = `${location.lat},${location.lng}`;
-
-    let marker = markerMap.get(key);
-    if (!marker) {
-      // Only animate new markers
-      marker = new window.google.maps.Marker({
+    if (!currentIds.has(location.id)) {
+      const marker = new window.google.maps.Marker({
         position: { lat: location.lat, lng: location.lng },
         map,
         title: location.name,
@@ -301,33 +298,24 @@ useEffect(() => {
           fillColor: getCategoryColor(location.category),
           fillOpacity: 0.9,
           strokeColor: '#ffffff',
-          strokeWeight: 3,
+          strokeWeight: 3
         },
-        animation: window.google.maps.Animation.DROP,
-        optimized: true,
+        optimized: true
       });
 
-      marker.addListener("click", () => {
+      marker.id = location.id;
+      marker.addListener('click', () => {
         setSelectedLocation(location);
         setDetailPanelHeight(2);
         map.panTo({ lat: location.lat, lng: location.lng });
       });
-    }
 
-    updatedMarkers.push(marker);
-  });
-
-  // Remove markers that are no longer needed
-  existingMarkers.forEach(marker => {
-    const pos = marker.getPosition();
-    const key = `${pos.lat()},${pos.lng()}`;
-    if (!filteredLocations.some(loc => `${loc.lat},${loc.lng}` === key)) {
-      marker.setMap(null);
+      markersRef.current.push(marker);
     }
   });
 
-  // Save updated markers
-  markersRef.current = updatedMarkers;
+  // Optional: remove duplicates
+  markersRef.current = markersRef.current.filter(m => newIds.has(m.id));
 }, [map, filteredLocations, activeTab]);
 
   // Track user location
