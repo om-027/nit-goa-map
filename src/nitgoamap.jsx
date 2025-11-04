@@ -21,7 +21,7 @@ const NITGoaCampusMap = () => {
       description: "Primary academic building housing major departments including CSE, ECE, and Mechanical Engineering",
       timings: "8:00 AM - 8:00 PM",
       contact: "+91-832-2404200",
-      image: "https://images.unsplash.com/photo-1562774053-701939374585?w=400&h=300&fit=crop"
+      image: "photos/Gyan_mandir.jpeg"
     },
     {
       id: 2,
@@ -45,7 +45,7 @@ const NITGoaCampusMap = () => {
       description: "Accommodation facility for male students with modern amenities",
       timings: "24/7",
       contact: "+91-832-2404220",
-      image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=300&fit=crop"
+      image: "photos/Boys_Hostel.jpeg"
     },
     {
       id: 4,
@@ -57,7 +57,7 @@ const NITGoaCampusMap = () => {
       description: "Accommodation facility for female students with secure access",
       timings: "24/7",
       contact: "+91-832-2404230",
-      image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=300&fit=crop"
+      image: "photos/Girls_hostel.jpeg"
     },
     {
       id: 5,
@@ -81,7 +81,7 @@ const NITGoaCampusMap = () => {
       description: "Main dining facility serving variety of cuisines and snacks",
       timings: "7:00 AM - 11:00 PM",
       contact: "+91-832-2404250",
-      image: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop"
+      image: "photos/canteen.jpeg"
     },
     {
       id: 7,
@@ -105,7 +105,7 @@ const NITGoaCampusMap = () => {
       description: "Computing labs with high-speed internet and latest hardware",
       timings: "8:00 AM - 10:00 PM",
       contact: "+91-832-2404270",
-      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=300&fit=crop"
+      image: "photos/cse_department_block.jpeg"
     },
     {
       id: 9,
