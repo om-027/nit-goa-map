@@ -178,7 +178,7 @@ const NITGoaCampusMap = () => {
       description: "Primary entrance to campus with security check",
       timings: "24/7",
       contact: "+91-832-2404260",
-      image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&h=300&fit=crop"
+      image: "photos/WhatsApp Image 2025-11-06 at 11.21.09 PM.jpeg"
     },
     {
       id: 8,
