@@ -24,6 +24,30 @@ const NITGoaCampusMap = () => {
       image: "photos/Gyan_mandir.jpeg"
     },
     {
+      id: 1,
+      name: "Hall",
+      category: "academic",
+      icon: "🏛️",
+      lat: 15.168922,
+      lng:74.011754,
+      description: "Primary academic building housing major departments including CSE, ECE, and Mechanical Engineering",
+      timings: "8:00 AM - 8:00 PM",
+      contact: "+91-832-2404200",
+      image: "photos/auditorium.jpeg"
+    },
+    {
+      id: 1,
+      name: "Medical Room",
+      category: "health",
+      icon: "🏛️",
+      lat: 15.170072,
+      lng:74.014263,
+      description: "Primary academic building housing major departments including CSE, ECE, and Mechanical Engineering",
+      timings: "8:00 AM - 8:00 PM",
+      contact: "+91-832-2404200",
+      image: "photos/medical.jpeg"
+    },
+    {
       id: 2,
       name: "Central Library",
       category: "facility",
@@ -142,7 +166,7 @@ const NITGoaCampusMap = () => {
       description: "Main dining facility serving variety of cuisines and snacks",
       timings: "7:00 AM - 11:00 PM",
       contact: "+91-832-2404250",
-      image: "photos/canteen.jpeg"
+      image: "photos/WhatsApp Image 2025-11-06 at 11.21.09 PM.jpeg"
     },
     {
       id: 7,
